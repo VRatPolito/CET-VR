@@ -1,4 +1,8 @@
-# CET-VR
+<p align="center">
+  <img src="CET-VR.png" alt="main" width="500">
+</p>
+
+# Cybersickness Evaluation Testbed VR
 The Cybersickness Evaluation Testbed VR (or CET-VR) is a tool which helps to select and evaluate the best suitable cybersickness mitigation technique to adopt in a given VR application scenario.
 
 * [Introduction](#introduction)
