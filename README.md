@@ -35,7 +35,7 @@ folder. In particular:
 The application targets only **Windows 10/11** and can be deployed to any VR system compatible with the **OpenXR** API,
 although minimum modifications may be necessary to support non-tested hand controllers
 
-- The builds have been tested with **Meta Quest 2/Pro** (via Link/AirLink)** w/ Touch/Touch Pro controllers.
+- The builds have been tested with **Meta Quest 2/Pro** (via Link/AirLink)** w/ Touch/Touch Pro controllers and **HTC Vive/Pro** w/ Vive controllers.
 
 ### Build *CET-VR*
 
@@ -51,7 +51,13 @@ installed (v2.8+), to have Unity correctly load the blend files in the project.
 
 Before building, it is also necessary to import a set of free assets available in the Unity Asset Store. To facilitate integration, the corresponding .meta files have been provided. Upon opening the project, Unity will delete the .meta files related to missing files, so when importing the asset, you need to avoid overwriting the corresponding .meta files or restore the original version found in the repository. The list of required assets can be found in the [Acknowledgements](#acknowledgements) section.
 
-**Important**: a Unity account is required to access the Unity Asset Store.
+**Important**: a Unity account is required to access the Unity Asset Store and to download free assets.
+
+**Note**: After importing the **MS Vehicle System (free version)** asset, you need to apply a patch to ensure proper integration. Navigate to the project directory containing the patch file [**patch.diff**](patch.diff) and run the following git command to apply the necessary modifications:
+
+```bash
+git apply patch.diff
+```
 
 #### Prepare to Build
 
