@@ -173,3 +173,9 @@ The project requires the following repositories and assets:
 <p align="center" width="100%">
     <img width="800" src="https://vr.polito.it/wp-content/uploads/2021/09/logo_intero_vr_polito_novel.png"> 
 </p>
+
+## Related Projects by VR@POLITO
+
+Check out other related projects from VR@POLITO:
+
+- [**LET-VR** (Locomotion Evaluation Testbed VR)](https://github.com/VRatPolito/LET-VR/): LET-VR is a research project aimed at supporting a comprehensive comparison of locomotion techniques for immersive VR using a provided evaluation testbed.
