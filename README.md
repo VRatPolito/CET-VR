@@ -154,6 +154,11 @@ Please cite this paper in your publications if it helps your research.
     keywords={Prevention and mitigation;Visualization;Measurement;Dynamics;Task analysis;Standards;Taxonomy;cybersickness;testbed;virtual reality;evaluation;virtual environments;simulator sickness;taxonomy},
     doi={10.1109/TVCG.2024.3448203}}
 
+The **CET-VR** design is detailed in:
+
+- *A Testbed for Studying Cybersickness and its Mitigation in Immersive Virtual Reality*
+    - [**IEEE TVCG**](10.1109/TVCG.2024.3448203)
+
 ## Contact
 
 Maintained by [Davide Calandra](mailto:davide.calandra@polito.it?subject=[GitHub]%20CET-VR) - feel free
