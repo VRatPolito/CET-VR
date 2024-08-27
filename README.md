@@ -157,7 +157,7 @@ Please cite this paper in your publications if it helps your research.
 The **CET-VR** design is detailed in:
 
 - *A Testbed for Studying Cybersickness and its Mitigation in Immersive Virtual Reality*
-    - [**IEEE TVCG**](10.1109/TVCG.2024.3448203)
+    - [**IEEE TVCG**](https://doi.org/10.1109/TVCG.2024.3448203)
 
 ## Contact
 
