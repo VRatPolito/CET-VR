@@ -108,7 +108,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         Debug.Log("cam: " + cam.pixelWidth + ", " + cam.pixelHeight + ", name: " + cam.name);
         Debug.Log("vr scale: " + UnityEngine.XR.XRSettings.eyeTextureResolutionScale + ", vr eye texture width: " + UnityEngine.XR.XRSettings.eyeTextureWidth + ", vr eye texture height: " + UnityEngine.XR.XRSettings.eyeTextureHeight);
         Debug.Log("vr render viewport scale" + UnityEngine.XR.XRSettings.renderViewportScale);
-        Debug.Log("screen: " + Screen.width + ", " + Screen.height + ", sceneResolutionScale: " + SteamVR_Camera.sceneResolutionScale);
+        //Debug.Log("screen: " + Screen.width + ", " + Screen.height + ", sceneResolutionScale: " + SteamVR_Camera.sceneResolutionScale);
         RenderTexture rt = new RenderTexture(Mathf.FloorToInt(cam.pixelWidth * m_ReflectionTextureScale),
             Mathf.FloorToInt(cam.pixelHeight * m_ReflectionTextureScale), 24);
         rt.hideFlags = HideFlags.DontSave;
@@ -190,7 +190,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         // have explicitly set the worldToCameraMatrix). We do this because some render effects may rely 
         // on the position/rotation of the camera.
         m_ReflectionCamera.transform.position = m_ReflectionCamera.cameraToWorldMatrix.GetPosition();
-        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.GetRotation();
+        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.rotation;
 
         bool oldInvertCulling = GL.invertCulling;
         GL.invertCulling = !oldInvertCulling;
@@ -224,7 +224,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         // have explicitly set the worldToCameraMatrix). We do this because some render effects may rely 
         // on the position/rotation of the camera.
         m_ReflectionCamera.transform.position = m_ReflectionCamera.cameraToWorldMatrix.GetPosition();
-        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.GetRotation();
+        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.rotation;
 
         //bool oldInvertCulling = GL.invertCulling;
         //GL.invertCulling = !oldInvertCulling;
@@ -232,7 +232,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         //GL.invertCulling = oldInvertCulling;
     }
 
-    private static Matrix4x4 GetSteamVRProjectionMatrix(Camera cam, Valve.VR.EVREye eye)
+    /*private static Matrix4x4 GetSteamVRProjectionMatrix(Camera cam, Valve.VR.EVREye eye)
     {
         //steam vr plugin 1.1.1
         Valve.VR.HmdMatrix44_t proj = SteamVR.instance.hmd.GetProjectionMatrix(eye, cam.nearClipPlane, cam.farClipPlane);
@@ -257,7 +257,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         m.m32 = proj.m14;
         m.m33 = proj.m15;
         return m;
-    }
+    }*/
 
     // Given position/normal of the plane, calculates plane in camera space.
     private static Vector4 CameraSpacePlane(Camera cam, Vector3 pos, Vector3 normal)
@@ -355,19 +355,19 @@ public class PlanarReflectionStereo : MonoBehaviour
         {
             if (cam.stereoTargetEye == StereoTargetEyeMask.Both || cam.stereoTargetEye == StereoTargetEyeMask.Left)
             {
-                Vector3 eyePos = cam.transform.TransformPoint(SteamVR.instance.eyes[0].pos);
+                /*Vector3 eyePos = cam.transform.TransformPoint(SteamVR.instance.eyes[0].pos);
                 Quaternion eyeRot = cam.transform.rotation * SteamVR.instance.eyes[0].rot;
                 Matrix4x4 projectionMatrix = GetSteamVRProjectionMatrix(cam, Valve.VR.EVREye.Eye_Left);
-                RenderMirror(eyePos, eyeRot, projectionMatrix, LeftEyeRect);
+                RenderMirror(eyePos, eyeRot, projectionMatrix, LeftEyeRect);*/
             }
 
             if (cam.stereoTargetEye == StereoTargetEyeMask.Both || cam.stereoTargetEye == StereoTargetEyeMask.Right)
             {
-                Vector3 eyePos = cam.transform.TransformPoint(SteamVR.instance.eyes[1].pos);
+                /*Vector3 eyePos = cam.transform.TransformPoint(SteamVR.instance.eyes[1].pos);
                 Quaternion eyeRot = cam.transform.rotation * SteamVR.instance.eyes[1].rot;
                 Matrix4x4 projectionMatrix = GetSteamVRProjectionMatrix(cam, Valve.VR.EVREye.Eye_Right);
 
-                RenderMirror(eyePos, eyeRot, projectionMatrix, RightEyeRect);
+                RenderMirror(eyePos, eyeRot, projectionMatrix, RightEyeRect);*/
             }
         }
         else
