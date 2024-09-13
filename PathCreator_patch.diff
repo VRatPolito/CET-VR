@@ -1,0 +1,280 @@
+diff --git a/UnityProject/Assets/PathCreator/Core/Settings/GlobalDisplaySettings.asset b/UnityProject/Assets/PathCreator/Core/Settings/GlobalDisplaySettings.asset
+index 53dbd17..e8b644d 100644
+--- a/UnityProject/Assets/PathCreator/Core/Settings/GlobalDisplaySettings.asset
++++ b/UnityProject/Assets/PathCreator/Core/Settings/GlobalDisplaySettings.asset
+@@ -33,4 +33,4 @@ MonoBehaviour:
+   segmentBounds: {r: 1, g: 1, b: 1, a: 0.4}
+   vertexPath: {r: 1, g: 1, b: 1, a: 1}
+   normals: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+-  normalsLength: 0.198
++  normalsLength: 0.87
+diff --git a/UnityProject/Assets/PathCreator/Examples/Scripts/PathFollower.cs b/UnityProject/Assets/PathCreator/Examples/Scripts/PathFollower.cs
+index 9b9ea27..1acff52 100644
+--- a/UnityProject/Assets/PathCreator/Examples/Scripts/PathFollower.cs
++++ b/UnityProject/Assets/PathCreator/Examples/Scripts/PathFollower.cs
+@@ -1,4 +1,8 @@
+ ﻿using UnityEngine;
++using System;
++using System.Collections;
++using System.Collections.Generic;
++using UnityEngine.Events;
+ 
+ namespace PathCreation.Examples
+ {
+@@ -8,31 +12,250 @@ namespace PathCreation.Examples
+     {
+         public PathCreator pathCreator;
+         public EndOfPathInstruction endOfPathInstruction;
+-        public float speed = 5;
++        public float Speed {            
++            get { return speed;
++                }
++            set {  speed = value;
++                   startSpeed = value;  
++                }
++            }
++        [SerializeField]
++        float speed = 10;
++        float startSpeed;
+         float distanceTravelled;
++        public float correctSpeed;
++        private float _nextLapDist;
++        RollerCoasterLevelManager _manager;
++
++        [SerializeField, HideInInspector, Tooltip("Areas with predefined speed multiplier")]
++        GameObject[] predefinedSpeedZone;
++        /*
++         * Direction of travel => speed + or -
++         */
++        [HideInInspector]
++        public int speedDirection = -1;
++        Transform _player;
++
++        public UnityEvent<int> OnLapCompleted = new UnityEvent<int>();
++
++        #region speedcontrol
++        [SerializeField, Tooltip("x: parametric position along path [0-100%] \ny: speed multiplier at position x")]
++        Vector2[] dist2speedMultip; //x:[0,1] parameter for position along the circuit, y, is the multiplicative value of the speed at that point
++        SortedDictionary<float, float> dist_multip_dict = new SortedDictionary<float, float>();
++        [SerializeField]
++        float speedMult; //speed multiplier along the path
++        #endregion
++        [HideInInspector]
++        public enum FollowingDirection
++        {
++            Clockwise,
++            Counterclockwise
++        }
++        [HideInInspector]
++        public FollowingDirection PathDirection = FollowingDirection.Clockwise;
++
++        [SerializeField]
++        AudioSource rollerSoundSource;
++        #region start_speedup
++        float curTime = 0f;
++        float speedReachTime = 10f; //time to reach the base speed
++        [HideInInspector]
++        public float startTime;
++        [HideInInspector]
++        public bool isStarting = true; //during the starting phase
++        internal int _numLap = 0;
++        #endregion
++
++        private void Awake()
++        {
++            startSpeed = speed;
++            if (GameManager.Instance == null)
++            {
++                _player = GameObject.FindGameObjectWithTag("Player").transform;
++                _manager = FindObjectOfType<RollerCoasterLevelManager>();
++            }
++            else
++            {
++                _player = GameManager.Instance.LevelManager.Player;
++                _manager = (RollerCoasterLevelManager)GameManager.Instance.LevelManager;
++            }
++            rollerSoundSource.spatialBlend = 0.7f;
++            rollerSoundSource.spatialize = true;
++
++        }
+ 
+         void Start() {
++
+             if (pathCreator != null)
+             {
++                _nextLapDist = pathCreator.path.length;
+                 // Subscribed to the pathUpdated event so that we're notified if the path changes during the game
+                 pathCreator.pathUpdated += OnPathChanged;
++
++                foreach(Vector2 v in dist2speedMultip)
++                {
++                    if(!dist_multip_dict.ContainsKey(v.x))
++                        dist_multip_dict.Add(v.x, v.y);
++                }
+             }
+         }
+ 
+-        void Update()
++        void FixedUpdate()
++        //void Update()
+         {
++            if (PathDirection == FollowingDirection.Clockwise)
++            {
++                speedDirection = -1;
++                _player.transform.localRotation = Quaternion.Euler(0, 180, 0);
++            }
++            else
++            {
++                speedDirection = 1;
++                _player.transform.localRotation = Quaternion.Euler(0, 0, 0);
++            }
+             if (pathCreator != null)
+             {
+-                distanceTravelled += speed * Time.deltaTime;
+-                transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
+-                transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
++                speedMult = getMultiplier();
++
++                correctSpeed = speedMult * speed;
++                distanceTravelled += speedDirection * speedMult * speed * Time.fixedDeltaTime;
++                if (Mathf.Abs(distanceTravelled) > _nextLapDist)
++                {
++                    _numLap++;
++                    OnLapCompleted?.Invoke(_numLap);
++                    _nextLapDist += pathCreator.path.length;
++                }
++                updatePosition(distanceTravelled);
+             }
+         }
+ 
++        public void updatePosition(float dst)
++        {
++            transform.position = pathCreator.path.GetPointAtDistance(dst, endOfPathInstruction);
++            transform.rotation = pathCreator.path.GetRotationAtDistance(dst, endOfPathInstruction);
++
++
++            _player.transform.position = transform.position;
++            Vector3 localPos = _player.transform.localPosition;
++            localPos.y += 1.75f;
++            _player.transform.localPosition = localPos;
++            Vector3 rot = _player.transform.localRotation.eulerAngles;
++            rot.y = 180;
++            _player.transform.localRotation = Quaternion.Euler(rot);
++        }
++
+         // If the path changes during the game, update the distance travelled so that the follower's position on the new path
+         // is as close as possible to its position on the old path
+         void OnPathChanged() {
+             distanceTravelled = pathCreator.path.GetClosestDistanceAlongPath(transform.position);
+         }
++               
++        public void resetPath(bool stop, bool resetDistance = true)
++        {
++            if (resetDistance)
++            {
++                distanceTravelled = 0;
++                _numLap = 0;
++                _nextLapDist = pathCreator.path.length;
++                updatePosition(0);
++            }
++            curTime = 0f;
++            isStarting = true;
++
++            if (stop)
++            {
++                speed = 0;
++            }
++            else
++            {
++                speed = startSpeed;
++            }
++        }
++
++        public float getDistanceTravelled()
++        {
++            return Mathf.Abs(distanceTravelled);
++        }
++
++        public float getCircuitLenPercentage()
++        {
++            return (speedDirection * distanceTravelled - (pathCreator.path.length * _numLap)) / pathCreator.path.length; //percentage of lap completion
++        }
++
++        float getMultiplier()
++        {
++            float mul=1;
++            curTime += Time.deltaTime;
++            //it reads the array, compares the percentage, and interpolates the multiplier with respect to the previous one
++            if (curTime <= speedReachTime)
++            {
++                mul = Mathf.InverseLerp(0, speedReachTime, curTime);
++                isStarting = true;
++            }
++            else
++            {
++                isStarting = false;
++
++                //float perc = (speedDirection * distanceTravelled - (pathCreator.path.length * getLapNumber())) / pathCreator.path.length; //percent percorrimento giro
++                float perc = getCircuitLenPercentage();
++                var keys = new List<float>(dist_multip_dict.Keys);
++                var index = keys.BinarySearch(perc * 100f);
++
++                if (index >= 0)
++                {
++                    mul = dist_multip_dict[perc * 100f];
++                }
++                else //it is necessary to interpolate between the two values
++                {
++
++                    int minIndex, maxIndex;
++                    float perc1, perc2;
++                    float m1, m2;
++
++                    minIndex = (~index - 1);
++                    maxIndex = (minIndex + 1) % (keys.Count);
++                    //Debug.Log(minIndex + " " + maxIndex + " perc:" + perc);
++                    perc1 = keys[minIndex];
++                    perc2 = keys[maxIndex];
++
++                    m1 = dist_multip_dict[perc1];
++                    m2 = dist_multip_dict[perc2];
++                    float p = Mathf.InverseLerp(perc1, perc2, perc * 100f);
++                    mul = Mathf.Lerp(m1, m2, p);
++                }
++            }
++
++            if (mul < 0.7f)
++            {
++                rollerSoundSource.pitch = 0.9f;
++            }               
++            else if (mul > 1.5f)
++            {
++                rollerSoundSource.pitch = 1.1f;
++            }
++            else
++            {
++                float pitch_perc = Mathf.InverseLerp(0.7f, 1.5f, mul);
++                rollerSoundSource.pitch = Mathf.Lerp(0.9f, 1.1f, pitch_perc);
++            }
++                
++
++            return mul;
++        }
++
++        private void OnDrawGizmos()
++        {
++            Gizmos.color = Color.red;
++
++            for (int i = 0; i < dist2speedMultip.Length; i++)
++            {
++                float dist =  speedDirection*dist2speedMultip[i].x/100f * pathCreator.path.length;
++                Vector3 point = pathCreator.path.GetPointAtDistance(dist);
++                Gizmos.DrawCube(point, new Vector3(1f, 1f, 1f));
++            }
++        }
+     }
++
++
++
+ }
+\ No newline at end of file

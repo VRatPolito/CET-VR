@@ -57,10 +57,14 @@ Before building, it is also necessary to import a set of free assets available i
 
 **Important**: a Unity account is required to access the Unity Asset Store and to download free assets.
 
-**Note**: After importing the **MS Vehicle System (free version)** asset, you need to apply a patch to ensure proper integration. Navigate to the project directory containing the patch file [**patch.diff**](patch.diff) and run the following git command to apply the necessary modifications:
+**Note**: After importing the **MS Vehicle System (free version)** and the **Bézier Path Creator** assets, you need to apply a patch to ensure proper integration. Navigate with a command prompt to the main project directory containing the patch files ([**MSVehicleSystem(FreeVersion)_patch.diff**](MSVehicleSystem(FreeVersion)_patch.diff) and [**PathCreator_patch.diff**](PathCreator_patch.diff)) and run the following git commands to apply the necessary modifications:
 
 ```bash
-git apply patch.diff
+git apply MSVehicleSystem(FreeVersion)_patch.diff
+```
+
+```bash
+git apply PathCreator_patch.diff
 ```
 
 #### Prepare to Build
@@ -173,11 +177,12 @@ Experimental material and Unity project are licensed under MIT License
 The project requires the following repositories and assets:
 - [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required).
 - [**VR Tunnelling Pro**](https://github.com/sigtrapgames/VrTunnellingPro-Unity): An asset for reducing cybersickness via visual effects (included).
+- **Water4Stereo** (included, original GitHub repo deleted, author info lost. Apologies).
 - [**Viking Village**](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-urp-29140) (to be imported)
 - [**Race Tracks**](https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
-- [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported)
+- [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
 - [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
-- [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported)
+- [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched
 - [**3D Game Effects Pack Free**](https://assetstore.unity.com/packages/vfx/particles/3d-games-effects-pack-free-42285) (to be imported)
 - [**World Material Free**](https://assetstore.unity.com/packages/2d/textures-materials/world-materials-free-150182) (to be imported)
 
