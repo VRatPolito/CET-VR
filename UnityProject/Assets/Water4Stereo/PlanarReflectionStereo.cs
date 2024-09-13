@@ -1,9 +1,8 @@
 ﻿#define RENDER_PER_FRAME
-using UnityEngine;
-using System.Collections;
-using UnityStandardAssets.Water;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.XR;
 //using Valve.VR;
 
 [ExecuteInEditMode]
@@ -109,6 +108,7 @@ public class PlanarReflectionStereo : MonoBehaviour
         Debug.Log("vr scale: " + UnityEngine.XR.XRSettings.eyeTextureResolutionScale + ", vr eye texture width: " + UnityEngine.XR.XRSettings.eyeTextureWidth + ", vr eye texture height: " + UnityEngine.XR.XRSettings.eyeTextureHeight);
         Debug.Log("vr render viewport scale" + UnityEngine.XR.XRSettings.renderViewportScale);
         //Debug.Log("screen: " + Screen.width + ", " + Screen.height + ", sceneResolutionScale: " + SteamVR_Camera.sceneResolutionScale);
+        Debug.Log("screen: " + Screen.width + ", " + Screen.height + ", sceneResolutionScale: " + XRSettings.renderViewportScale);
         RenderTexture rt = new RenderTexture(Mathf.FloorToInt(cam.pixelWidth * m_ReflectionTextureScale),
             Mathf.FloorToInt(cam.pixelHeight * m_ReflectionTextureScale), 24);
         rt.hideFlags = HideFlags.DontSave;
@@ -189,13 +189,24 @@ public class PlanarReflectionStereo : MonoBehaviour
         // Set camera position and rotation (even though it will be ignored by the render pass because we
         // have explicitly set the worldToCameraMatrix). We do this because some render effects may rely 
         // on the position/rotation of the camera.
-        m_ReflectionCamera.transform.position = m_ReflectionCamera.cameraToWorldMatrix.GetPosition();
-        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.rotation;
+
+        m_ReflectionCamera.transform.position = GetPosition(m_ReflectionCamera.cameraToWorldMatrix);
+        m_ReflectionCamera.transform.rotation = GetRotation(m_ReflectionCamera.cameraToWorldMatrix);
 
         bool oldInvertCulling = GL.invertCulling;
         GL.invertCulling = !oldInvertCulling;
         m_ReflectionCamera.Render();
         GL.invertCulling = oldInvertCulling;
+    }
+
+    private static Vector3 GetPosition(Matrix4x4 m)
+    {
+        return new Vector3(m.m03, m.m13, m.m23);
+    }
+
+    private static Quaternion GetRotation(Matrix4x4 m)
+    {
+        return Quaternion.LookRotation(m.GetColumn(2).normalized, m.GetColumn(1).normalized);
     }
 
     void RenderMirror(Vector3 camPosition, Quaternion camRotation, Matrix4x4 camProjectionMatrix, Rect camViewport)
@@ -223,14 +234,15 @@ public class PlanarReflectionStereo : MonoBehaviour
         // Set camera position and rotation (even though it will be ignored by the render pass because we
         // have explicitly set the worldToCameraMatrix). We do this because some render effects may rely 
         // on the position/rotation of the camera.
-        m_ReflectionCamera.transform.position = m_ReflectionCamera.cameraToWorldMatrix.GetPosition();
-        m_ReflectionCamera.transform.rotation = m_ReflectionCamera.cameraToWorldMatrix.rotation;
+        m_ReflectionCamera.transform.position = GetPosition(m_ReflectionCamera.cameraToWorldMatrix);
+        m_ReflectionCamera.transform.rotation = GetRotation(m_ReflectionCamera.cameraToWorldMatrix);
 
         //bool oldInvertCulling = GL.invertCulling;
         //GL.invertCulling = !oldInvertCulling;
         m_ReflectionCamera.Render();
         //GL.invertCulling = oldInvertCulling;
     }
+
 
     /*private static Matrix4x4 GetSteamVRProjectionMatrix(Camera cam, Valve.VR.EVREye eye)
     {
@@ -359,6 +371,14 @@ public class PlanarReflectionStereo : MonoBehaviour
                 Quaternion eyeRot = cam.transform.rotation * SteamVR.instance.eyes[0].rot;
                 Matrix4x4 projectionMatrix = GetSteamVRProjectionMatrix(cam, Valve.VR.EVREye.Eye_Left);
                 RenderMirror(eyePos, eyeRot, projectionMatrix, LeftEyeRect);*/
+                Vector3 eyePos = Vector3.zero;
+                Quaternion eyeRot = Quaternion.identity;
+                InputDevices.GetDeviceAtXRNode(XRNode.LeftEye).TryGetFeatureValue(CommonUsages.devicePosition, out eyePos);
+                InputDevices.GetDeviceAtXRNode(XRNode.LeftEye).TryGetFeatureValue(CommonUsages.deviceRotation, out eyeRot);
+                eyePos = cam.transform.TransformPoint(eyePos);
+                eyeRot = cam.transform.rotation * eyeRot;
+                Matrix4x4 projectionMatrix = cam.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
+                RenderMirror(eyePos, eyeRot, projectionMatrix, LeftEyeRect);
             }
 
             if (cam.stereoTargetEye == StereoTargetEyeMask.Both || cam.stereoTargetEye == StereoTargetEyeMask.Right)
@@ -368,6 +388,15 @@ public class PlanarReflectionStereo : MonoBehaviour
                 Matrix4x4 projectionMatrix = GetSteamVRProjectionMatrix(cam, Valve.VR.EVREye.Eye_Right);
 
                 RenderMirror(eyePos, eyeRot, projectionMatrix, RightEyeRect);*/
+                Vector3 eyePos = Vector3.zero;
+                Quaternion eyeRot = Quaternion.identity;
+                InputDevices.GetDeviceAtXRNode(XRNode.RightEye).TryGetFeatureValue(CommonUsages.devicePosition, out eyePos);
+                InputDevices.GetDeviceAtXRNode(XRNode.RightEye).TryGetFeatureValue(CommonUsages.deviceRotation, out eyeRot);
+                eyePos = cam.transform.TransformPoint(eyePos);
+                eyeRot = cam.transform.rotation * eyeRot;
+                Matrix4x4 projectionMatrix = cam.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right);
+
+                RenderMirror(eyePos, eyeRot, projectionMatrix, RightEyeRect);
             }
         }
         else
