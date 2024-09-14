@@ -182,7 +182,7 @@ The project requires the following repositories and assets:
 - [**Race Tracks**](https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
 - [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
 - [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
-- [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched
+- [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched)
 - [**3D Game Effects Pack Free**](https://assetstore.unity.com/packages/vfx/particles/3d-games-effects-pack-free-42285) (to be imported)
 - [**World Material Free**](https://assetstore.unity.com/packages/2d/textures-materials/world-materials-free-150182) (to be imported)
 
