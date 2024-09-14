@@ -1,13 +1,8 @@
 diff --git a/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSSceneControllerFree.cs b/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSSceneControllerFree.cs
-index 1833424..0632ca2 100644
+index 1833424..94c8f28 100644
 --- a/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSSceneControllerFree.cs
 +++ b/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSSceneControllerFree.cs
-@@ -1,42 +1,43 @@
--﻿using System.Collections;
-+using System.Collections;
- using System.Collections.Generic;
- using UnityEngine;
- using UnityEngine.SceneManagement;
+@@ -5,38 +5,39 @@ using UnityEngine.SceneManagement;
  using UnityEngine.UI;
  using System.Linq;
  using System;
@@ -284,15 +279,10 @@ index 1833424..0632ca2 100644
  				}
  			}
 diff --git a/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSVehicleControllerFree.cs b/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSVehicleControllerFree.cs
-index ce31154..55fb654 100644
+index ce31154..28a3e58 100644
 --- a/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSVehicleControllerFree.cs
 +++ b/UnityProject/Assets/MSVehicleSystem(FreeVersion)/Scripts/MSVehicleControllerFree.cs
-@@ -1,10 +1,11 @@
--﻿using Random = UnityEngine.Random;
-+using Random = UnityEngine.Random;
- using System;
- using System.Collections;
- using System.Collections.Generic;
+@@ -5,6 +5,7 @@ using System.Collections.Generic;
  using System.Linq;
  using UnityEngine;
  using UnityEngine.UI;
