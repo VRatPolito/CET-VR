@@ -60,7 +60,7 @@ Before building, it is also necessary to import a set of free assets available i
 **Note**: After importing the **MS Vehicle System (free version)** and the **Bézier Path Creator** assets, you need to apply a patch to ensure proper integration. Navigate with a command prompt to the main project directory containing the patch files ([**MSVehicleSystem(FreeVersion)_patch.diff**](MSVehicleSystem(FreeVersion)_patch.diff) and [**PathCreator_patch.diff**](PathCreator_patch.diff)) and run the following git commands to apply the necessary modifications:
 
 ```bash
-git apply MSVehicleSystem(FreeVersion)_patch.diff
+git apply MSVehicleSystem_patch.diff
 ```
 
 ```bash
@@ -154,7 +154,7 @@ Please cite this paper in your publications if it helps your research.
     year={2024},
     volume={},
     number={},
-    pages={1-18},
+    pages={1--18},
     keywords={Prevention and mitigation;Visualization;Measurement;Dynamics;Task analysis;Standards;Taxonomy;cybersickness;testbed;virtual reality;evaluation;virtual environments;simulator sickness;taxonomy},
     doi={10.1109/TVCG.2024.3448203}}
 
