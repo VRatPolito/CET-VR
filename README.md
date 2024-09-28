@@ -205,8 +205,8 @@ The project requires the following repositories and assets:
 - [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required).
 - [**VR Tunnelling Pro**](https://github.com/sigtrapgames/VrTunnellingPro-Unity): An asset for reducing cybersickness via visual effects (included).
 - **Water4Stereo** (included, original GitHub repo deleted, author info lost. Apologies).
-- [**Viking Village**](https://web.archive.org/web/20210302022641/https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported)
-- [**Race Tracks**](https://web.archive.org/web/20220721135823/https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
+- [**Viking Village**](https://web.archive.org/web/20210302022641/https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported and patched[*](#known-issues))
+- [**Race Tracks**](https://web.archive.org/web/20220721135823/https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported[*](#known-issues))
 - [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
 - [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
 - [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched)
