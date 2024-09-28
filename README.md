@@ -202,7 +202,7 @@ Experimental material and Unity project are licensed under MIT License
 ## Acknowledgements
 
 The project requires the following repositories and assets:
-- [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required).
+- [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required[*](#known-issues)).
 - [**VR Tunnelling Pro**](https://github.com/sigtrapgames/VrTunnellingPro-Unity): An asset for reducing cybersickness via visual effects (included).
 - **Water4Stereo** (included, original GitHub repo deleted, author info lost. Apologies).
 - [**Viking Village**](https://web.archive.org/web/20210302022641/https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported and patched[*](#known-issues))
