@@ -1,0 +1,201 @@
+diff --git a/UnityProject/Assets/Standard Assets/CrossPlatformInput/Scripts/MobileControlRig.cs b/UnityProject/Assets/Standard Assets/CrossPlatformInput/Scripts/MobileControlRig.cs
+deleted file mode 100644
+index 4dd02b4..0000000
+--- a/UnityProject/Assets/Standard Assets/CrossPlatformInput/Scripts/MobileControlRig.cs	
++++ /dev/null
+@@ -1,73 +0,0 @@
+-using System;
+-#if UNITY_EDITOR
+-using UnityEditor;
+-using UnityEditor.Build;
+-#endif
+-using UnityEngine;
+-using UnityEngine.Events;
+-
+-namespace UnityStandardAssets.CrossPlatformInput
+-{
+-    [ExecuteInEditMode]
+-    public class MobileControlRig : MonoBehaviour, IActiveBuildTargetChanged
+-    {
+-        // this script enables or disables the child objects of a control rig
+-        // depending on whether the USE_MOBILE_INPUT define is declared.
+-
+-        // This define is set or unset by a menu item that is included with
+-        // the Cross Platform Input package.
+-        public UnityEvent ActiveBuildTargetChanged;
+-        public int callbackOrder { get { return 0; } }
+-        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+-        {
+-            ActiveBuildTargetChanged?.Invoke();
+-        }
+-#if !UNITY_EDITOR
+-	void OnEnable()
+-	{
+-		CheckEnableControlRig();
+-	}
+-#endif
+-
+-#if UNITY_EDITOR
+-
+-        private void OnEnable()
+-        {
+-            ActiveBuildTargetChanged.AddListener(Update);
+-            EditorApplication.update += Update;
+-        }
+-
+-
+-        private void OnDisable()
+-        {
+-            ActiveBuildTargetChanged.RemoveListener(Update);
+-            EditorApplication.update -= Update;
+-        }
+-
+-
+-        private void Update()
+-        {
+-            CheckEnableControlRig();
+-        }
+-#endif
+-
+-
+-        private void CheckEnableControlRig()
+-        {
+-#if MOBILE_INPUT
+-		EnableControlRig(true);
+-		#else
+-            EnableControlRig(false);
+-#endif
+-        }
+-
+-
+-        private void EnableControlRig(bool enabled)
+-        {
+-            foreach (Transform t in transform)
+-            {
+-                t.gameObject.SetActive(enabled);
+-            }
+-        }
+-    }
+-}
+diff --git a/UnityProject/Assets/Standard Assets/Utility/PlatformSpecificContent.cs b/UnityProject/Assets/Standard Assets/Utility/PlatformSpecificContent.cs
+deleted file mode 100644
+index 602c364..0000000
+--- a/UnityProject/Assets/Standard Assets/Utility/PlatformSpecificContent.cs	
++++ /dev/null
+@@ -1,116 +0,0 @@
+-using System;
+-using UnityEngine;
+-using UnityEngine.Events;
+-using UnityEditor.Build;
+-#if UNITY_EDITOR
+-using UnityEditor;
+-#endif
+-
+-namespace UnityStandardAssets.Utility
+-{
+-#if UNITY_EDITOR
+-
+-    [ExecuteInEditMode]
+-#endif
+-    public class PlatformSpecificContent : MonoBehaviour, IActiveBuildTargetChanged
+-    {
+-        public UnityEvent ActiveBuildTargetChanged;
+-        public int callbackOrder { get { return 0; } }
+-        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
+-        {
+-            ActiveBuildTargetChanged?.Invoke();
+-        }
+-        private enum BuildTargetGroup
+-        {
+-            Standalone,
+-            Mobile
+-        }
+-
+-        [SerializeField] private BuildTargetGroup m_BuildTargetGroup;
+-        [SerializeField] private GameObject[] m_Content = new GameObject[0];
+-        [SerializeField] private MonoBehaviour[] m_MonoBehaviours = new MonoBehaviour[0];
+-        [SerializeField] private bool m_ChildrenOfThisObject;
+-
+-#if !UNITY_EDITOR
+-	void OnEnable()
+-	{
+-		CheckEnableContent();
+-	}
+-#endif
+-
+-#if UNITY_EDITOR
+-
+-        private void OnEnable()
+-        {
+-            ActiveBuildTargetChanged.AddListener(Update);
+-            EditorApplication.update += Update;
+-        }
+-
+-
+-        private void OnDisable()
+-        {
+-            ActiveBuildTargetChanged.RemoveListener(Update);
+-            EditorApplication.update -= Update;
+-        }
+-
+-
+-        private void Update()
+-        {
+-            CheckEnableContent();
+-        }
+-#endif
+-
+-
+-        private void CheckEnableContent()
+-        {
+-#if (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_BLACKBERRY )
+-		if (m_BuildTargetGroup == BuildTargetGroup.Mobile)
+-		{
+-			EnableContent(true);
+-		} else {
+-			EnableContent(false);
+-		}
+-#endif
+-
+-#if !(UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_BLACKBERRY )
+-            if (m_BuildTargetGroup == BuildTargetGroup.Mobile)
+-            {
+-                EnableContent(false);
+-            }
+-            else
+-            {
+-                EnableContent(true);
+-            }
+-#endif
+-        }
+-
+-
+-        private void EnableContent(bool enabled)
+-        {
+-            if (m_Content.Length > 0)
+-            {
+-                foreach (var g in m_Content)
+-                {
+-                    if (g != null)
+-                    {
+-                        g.SetActive(enabled);
+-                    }
+-                }
+-            }
+-            if (m_ChildrenOfThisObject)
+-            {
+-                foreach (Transform t in transform)
+-                {
+-                    t.gameObject.SetActive(enabled);
+-                }
+-            }
+-            if (m_MonoBehaviours.Length > 0)
+-            {
+-                foreach (var monoBehaviour in m_MonoBehaviours)
+-                {
+-                    monoBehaviour.enabled = enabled;
+-                }
+-            }
+-        }
+-    }
+-}
