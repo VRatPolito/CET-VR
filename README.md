@@ -10,6 +10,7 @@ The Cybersickness Evaluation Testbed VR (or CET-VR) is a tool which helps to sel
 * [Experimental Material](#experimental-material)
 * [Builds and Building](#builds)
 * [Tool Usage](#tool-usage)
+* [Cybersickness Mitigation Techniques](#cybersickness-mitigation-techniques)
 * [Advanced Configuration](#advanced-configuration)
 * [Forking Policies](#forking-policies)
 * [Citation](#citation)
@@ -133,6 +134,32 @@ All available shortcuts are displayed on the experimenter's monitor interface.
   - Every minute, a highly visible indicator will prompt the experimenter to update the Discomfort Scale value (from 1 to 10) by asking the user how they feel.
   - If the score reaches 10, the simulation will be interrupted automatically (equivalent to using the `CTRL+L` combination for cybersickness withdrawal).
   - Always use `CTRL+L` to terminate the experience in case of extreme cybersickness symptoms (**Important**: Do not use `CTRL+Q`, as it does not ensure an orderly termination of the logging component).
+
+## Cybersickness Mitigation Techniques
+
+The CET-VR testbed includes a variety of cybersickness mitigation techniques from different sources, including the **GingerVR** repository and other well-known works in the literature.
+
+### Integrated Techniques
+
+1. **GingerVR Repository**: 
+   - The **GingerVR** repository was integrated to provide numerous cybersickness mitigation techniques that have been proposed in the literature. More details on the techniques provided by GingerVR can be found in the original work [here](https://doi.org/10.1109/VRW50115.2020.00097).
+     
+     - **SingleNose**: Inspired by the work of [Wienrich et al. (2018)](https://doi.org/10.1109/VS-Games.2018.8493408).
+     - **AuthenticNose**: Inspired by [Wienrich et al. (2018)](https://doi.org/10.1109/VS-Games.2018.8493408).
+     - **DynamicGaussianBlur**: Inspired by [Budhiraja et al. (2017)](https://doi.org/10.48550/arXiv.1710.02599).
+     - **ColorBlur**: Inspired by [Nie et al. (2020)](https://doi.org/10.1109/TVCG.2019.2893668).
+     - **DynamicFOV (Field of View)**: Inspired by [Fernandes and Feiner (2016)](https://doi.org/10.1109/3DUI.2016.7460053).
+     - **DotEffect**: Inspired by [Buhler et al. (2018)](https://doi.org/10.1109/VR.2018.8446346).
+     - **HeadSnapper**: Inspired by [Farmani and Teather (2018)](https://doi.org/10.20380/GI2018.23).
+     - **VisionLock**: Inspired by [Kemeny et al. (2017)](https://doi.org/10.2352/ISSN.2470-1173.2017.3.ERVR-097).
+     - **VirtualCAVE**: Inspired by [Nguyen-Vo et al. (2018)](https://doi.org/10.1109/VR.2018.8446383).
+
+2. **VR Tunnelling Pro**: 
+   - The free **VR Tunnelling Pro** Unity asset was integrated into the testbed. This asset allows for variations and customizations of the original *Dynamic FOV* technique, and, in particular, the *Masked Dynamic FOV* evaluated in the paper. More details can be found [here](http://www.sigtrapgames.com/vrtp/).
+
+3. **Additional Techniques from Literature**:
+   - **Circle Effect**: Implemented based on the description provided in [Bühler et al. (2018)](https://doi.org/10.1109/VR.2018.8446346).
+   - **Gaze-Contingent Depth-of-Field**: This technique was developed following the paper by [Carnegie and Rhee (2015)](https://doi.org/10.1109/MCG.2015.98).
 
 ## Advanced Configuration
 
