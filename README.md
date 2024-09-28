@@ -60,14 +60,12 @@ Before building, it is also necessary to import a set of free assets available i
 
 **Important**: a Unity account is required to access the Unity Asset Store and to download free assets.
 
-**Note**: After importing the **MS Vehicle System (free version)** and the **Bézier Path Creator** assets, you need to apply a patch to ensure proper integration. Navigate with a command prompt to the main project directory containing the patch files ([**MSVehicleSystem(FreeVersion)_patch.diff**](MSVehicleSystem(FreeVersion)_patch.diff) and [**PathCreator_patch.diff**](PathCreator_patch.diff)) and run the following git commands to apply the necessary modifications:
+**Note**: After importing the **MS Vehicle System (free version)**, the **Bézier Path Creator**, and the **Viking Village** assets, you need to apply a patch to ensure proper integration. Navigate with a command prompt to the main project directory containing the patch files ([**MSVehicleSystem(FreeVersion)_patch.diff**](MSVehicleSystem(FreeVersion)_patch.diff), [**PathCreator_patch.diff**](PathCreator_patch.diff), and [**VikingVillage_patch.diff**](VikingVillage_patch.diff)), and run the following git commands to apply the necessary modifications:
 
 ```bash
 git apply MSVehicleSystem_patch.diff
-```
-
-```bash
 git apply PathCreator_patch.diff
+git apply VikingVillage_patch.diff
 ```
 
 #### Prepare to Build
