@@ -50,7 +50,7 @@ Instructions to compile the project:
 
 #### Infos
 
-The project was revamped and tested with [**Unity 2021.3.x (LTS)**](https://unity3d.com/unity/qa/lts-releases?version=2021.3)
+The project was developed and tested using [**Unity 2021.3.x (LTS)**](https://unity3d.com/unity/qa/lts-releases?version=2021.3) and requires the **Windows Build Support (IL2CPP)**, which can be installed through Unity Hub as additional component.
 
 The list of unity package dependencies is in the [**manifest file**](UnityProject/Packages/manifest.json) and will be
 automatically managed by the Unity editor. You will need also [**Blender**](https://www.blender.org/download/) to be
@@ -207,8 +207,8 @@ The project requires the following repositories and assets:
 - [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required).
 - [**VR Tunnelling Pro**](https://github.com/sigtrapgames/VrTunnellingPro-Unity): An asset for reducing cybersickness via visual effects (included).
 - **Water4Stereo** (included, original GitHub repo deleted, author info lost. Apologies).
-- [**Viking Village**](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported)
-- [**Race Tracks**](https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
+- [**Viking Village**](https://web.archive.org/web/20210302022641/https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported)
+- [**Race Tracks**](https://web.archive.org/web/20220721135823/https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
 - [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
 - [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
 - [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched)
@@ -224,10 +224,12 @@ The project requires the following repositories and assets:
    The "Viking Village" asset was recently updated on the Asset Store to an optimized version compatible with Unity's Universal Render Pipeline (URP). However, our testbed uses an earlier version designed for Unity 5 and the Built-In Render Pipeline. Since the current version is no longer compatible with the Built-In pipeline, we are providing the previous version, also extracted from the full project, as a temporary download here: [Viking Village Previous Version](https://mega.nz/file/T9BXHYRT#UUgR330aLUWNvyxDx_PRkGL8hZQijtET6yKOBF4sILE). In the near future, we plan to update the testbed to be compatible with the latest URP version of the Viking Village asset, available [here](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-urp-29140).
 
 3. **GingerVR Compatibility Adjustments**:
-   The **GingerVR** asset was originally designed for Oculus Integration and the older `UnityEngine.XR` framework. It has been modified to ensure compatibility with OpenXR and the new `Unity XR Plug-in Management`. However, there are still some unresolved issues, such as:
+   The **GingerVR** asset was originally designed for Oculus Integration and the older `UnityEngine.XR` framework. It has been modified to ensure compatibility with OpenXR and the new `Unity XR Plugin Management`. However, there are still some unresolved issues, such as:
    - Compatibility with **Single Pass Rendering** mode, which currently might cause unexpected visual behaviors.
    - Proper stereo management for visual techniques applied to the entire frame, resulting in incorrect or inconsistent effects across both eyes in VR.
+
    Additionally, one of the techniques from GingerVR, the **VirtualCAVE** effect, was missing a crucial component (i.e., the management script). This script had to be recreated from scratch by following the description provided in the original paper to ensure proper functionality.
+
    The implementation of the **VisionLock** technique was also modified. Previously, it required parenting the entire scene's content to the user’s Camera during activation, which made it incompatible with scenarios involving physics, gravity, or lighting from the skybox. These limitations have been addressed to improve compatibility and functionality within the testbed environment.
 
 ## Related Projects by VR@POLITO
