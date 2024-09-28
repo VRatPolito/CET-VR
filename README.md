@@ -17,6 +17,8 @@ The Cybersickness Evaluation Testbed VR (or CET-VR) is a tool which helps to sel
 * [Contacts](#contact)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
+* [Known Issues](#known-issues)
+* [Related Projects by VR@POLITO](#related-projects-by-vrpolito)
 
 ## Introduction
 
@@ -205,7 +207,7 @@ The project requires the following repositories and assets:
 - [**GingerVR**](https://github.com/angsamuel/GingerVR): A collection of cybersickness mitigation techniques in VR for Unity, modified to work with OpenXR (included, further bug fixes might be required).
 - [**VR Tunnelling Pro**](https://github.com/sigtrapgames/VrTunnellingPro-Unity): An asset for reducing cybersickness via visual effects (included).
 - **Water4Stereo** (included, original GitHub repo deleted, author info lost. Apologies).
-- [**Viking Village**](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-urp-29140) (to be imported)
+- [**Viking Village**](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported)
 - [**Race Tracks**](https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported)
 - [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
 - [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
@@ -213,12 +215,28 @@ The project requires the following repositories and assets:
 - [**3D Game Effects Pack Free**](https://assetstore.unity.com/packages/vfx/particles/3d-games-effects-pack-free-42285) (to be imported)
 - [**World Material Free**](https://assetstore.unity.com/packages/2d/textures-materials/world-materials-free-150182) (to be imported)
 
-<p align="center" width="100%">
-    <img width="800" src="https://vr.polito.it/wp-content/uploads/2021/09/logo_intero_vr_polito_novel.png"> 
-</p>
+## Known Issues
+
+1. **Missing Asset - Race Tracks**: 
+   The "Race Tracks" asset was recently removed from the Unity Asset Store, making it unavailable for direct download. We will try reaching out to the original author to request that the asset be made available outside of the Unity Asset Store. In the meantime, as a temporary solution, the necessary asset package, extracted from the complete project, can be downloaded here: [Race Tracks Asset Package](https://mega.nz/file/L0ZkzCbB#XqZJdVO07iyeVDkRWLUr0Z0RdEzSbWIdssnjUcLGKeo). If we are unable to resolve this issue, we will replicate the scenario (i.e., the track used in the testbed) from scratch in the long term.
+
+2. **Viking Village Asset Update**: 
+   The "Viking Village" asset was recently updated on the Asset Store to an optimized version compatible with Unity's Universal Render Pipeline (URP). However, our testbed uses an earlier version designed for Unity 5 and the Built-In Render Pipeline. Since the current version is no longer compatible with the Built-In pipeline, we are providing the previous version, also extracted from the full project, as a temporary download here: [Viking Village Previous Version](https://mega.nz/file/T9BXHYRT#UUgR330aLUWNvyxDx_PRkGL8hZQijtET6yKOBF4sILE). In the near future, we plan to update the testbed to be compatible with the latest URP version of the Viking Village asset, available [here](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-urp-29140).
+
+3. **GingerVR Compatibility Adjustments**:
+   The **GingerVR** asset was originally designed for Oculus Integration and the older `UnityEngine.XR` framework. It has been modified to ensure compatibility with OpenXR and the new `Unity XR Plug-in Management`. However, there are still some unresolved issues, such as:
+   - Compatibility with **Single Pass Rendering** mode, which currently might cause unexpected visual behaviors.
+   - Proper stereo management for visual techniques applied to the entire frame, resulting in incorrect or inconsistent effects across both eyes in VR.
+   Additionally, one of the techniques from GingerVR, the **VirtualCAVE** effect, was missing a crucial component (i.e., the management script). This script had to be recreated from scratch by following the description provided in the original paper to ensure proper functionality.
+   The implementation of the **VisionLock** technique was also modified. Previously, it required parenting the entire scene's content to the user’s Camera during activation, which made it incompatible with scenarios involving physics, gravity, or lighting from the skybox. These limitations have been addressed to improve compatibility and functionality within the testbed environment.
 
 ## Related Projects by VR@POLITO
 
 Check out other related projects from VR@POLITO:
 
 - [**LET-VR** (Locomotion Evaluation Testbed VR)](https://github.com/VRatPolito/LET-VR/): LET-VR is a research project aimed at supporting a comprehensive comparison of locomotion techniques for immersive VR using a provided evaluation testbed.
+
+<p align="center" width="100%">
+    <img width="800" src="https://vr.polito.it/wp-content/uploads/2021/09/logo_intero_vr_polito_novel.png"> 
+</p>
+
