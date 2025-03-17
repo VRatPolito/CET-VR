@@ -22,7 +22,10 @@ The Cybersickness Evaluation Testbed VR (or CET-VR) is a tool which helps to sel
 
 ## Introduction
 
-COMING SOON
+For an overview of the project have a look at the video here below presented at the\
+*32nd IEEE Conference on Virtual Reality and 3D User Interfaces* (IEEE VR 2025)\
+\
+[![Presentation Video IEEE VR 2025](https://i.postimg.cc/g0MQhw98/image.png)](https://youtu.be/G05Hp5W-44s "Video Title")
 
 ## Videos
 
