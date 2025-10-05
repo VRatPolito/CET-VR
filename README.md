@@ -182,9 +182,9 @@ Please cite this paper in your publications if it helps your research.
     journal={IEEE Transactions on Visualization and Computer Graphics}, 
     title={A Testbed for Studying Cybersickness and its Mitigation in Immersive Virtual Reality}, 
     year={2024},
-    volume={},
-    number={},
-    pages={1--18},
+    volume={30},
+    number={12},
+    pages={7788--7805},
     keywords={Prevention and mitigation;Visualization;Measurement;Dynamics;Task analysis;Standards;Taxonomy;cybersickness;testbed;virtual reality;evaluation;virtual environments;simulator sickness;taxonomy},
     doi={10.1109/TVCG.2024.3448203}}
 
