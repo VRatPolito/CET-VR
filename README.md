@@ -211,15 +211,15 @@ The project requires the following repositories and assets:
 - [**Viking Village**](https://web.archive.org/web/20210302022641/https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-29140) (to be imported and patched[*](#known-issues))
 - [**Race Tracks**](https://web.archive.org/web/20220721135823/https://assetstore.unity.com/packages/3d/environments/roadways/race-tracks-140501) (to be imported[*](#known-issues))
 - [**MS Vehicle System (free version)**](https://assetstore.unity.com/packages/tools/physics/ms-vehicle-system-free-version-90214) (to be imported and patched)
-- [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported)
+- [**Tiny Robot Packs**](https://assetstore.unity.com/packages/3d/characters/robots/tiny-robots-pack-98930) (to be imported[*](#known-issues))
 - [**Bézier Path Creator**](https://assetstore.unity.com/packages/tools/utilities/b-zier-path-creator-136082) (to be imported and patched)
 - [**3D Game Effects Pack Free**](https://assetstore.unity.com/packages/vfx/particles/3d-games-effects-pack-free-42285) (to be imported)
 - [**World Material Free**](https://assetstore.unity.com/packages/2d/textures-materials/world-materials-free-150182) (to be imported)
 
 ## Known Issues
 
-1. **Missing Asset - Race Tracks**: 
-   The "Race Tracks" asset was recently removed from the Unity Asset Store, making it unavailable for direct download. We will try reaching out to the original author to request that the asset be made available outside of the Unity Asset Store. In the meantime, as a temporary solution, the necessary asset package, extracted from the complete project, can be downloaded here: [Race Tracks Asset Package](https://mega.nz/file/L0ZkzCbB#XqZJdVO07iyeVDkRWLUr0Z0RdEzSbWIdssnjUcLGKeo). If we are unable to resolve this issue, we will replicate the scenario (i.e., the track used in the testbed) from scratch in the long term.
+1. **Missing Asset - Race Tracks and Tiny Robot Packs**: 
+   The "Race Tracks" and "Tiny Robot Packs" asset were recently removed from the Unity Asset Store, making them unavailable for direct download. We will try reaching out to the original authors to request that these assets be made available outside of the Unity Asset Store. In the meantime, as a temporary solution, the necessary asset packages, extracted from the complete project, can be downloaded here: [Race Tracks Asset Package](https://mega.nz/file/L0ZkzCbB#XqZJdVO07iyeVDkRWLUr0Z0RdEzSbWIdssnjUcLGKeo), [Tiny Robot Packs](https://mega.nz/file/r0QDnCAL#JEWPonbiRuj-p_TaWFo6GHVD8DoRuNvXISofFk57ZbQ). If we are unable to resolve this issue, we will replicate the elements (i.e., the race track and the tower defense robots) from scratch in the long term.
 
 2. **Viking Village Asset Update**: 
    The "Viking Village" asset was recently updated on the Asset Store to an optimized version compatible with Unity's Universal Render Pipeline (URP). However, our testbed uses an earlier version designed for Unity 5 and the Built-In Render Pipeline. Since the current version is no longer compatible with the Built-In pipeline, we are providing the previous version, also extracted from the full project, as a temporary download here: [Viking Village Previous Version](https://mega.nz/file/T9BXHYRT#UUgR330aLUWNvyxDx_PRkGL8hZQijtET6yKOBF4sILE). In the near future, we plan to update the testbed to be compatible with the latest URP version of the Viking Village asset, available [here](https://assetstore.unity.com/packages/essentials/tutorial-projects/viking-village-urp-29140).
