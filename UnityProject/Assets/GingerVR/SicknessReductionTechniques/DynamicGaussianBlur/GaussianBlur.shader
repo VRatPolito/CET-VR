@@ -4,95 +4,84 @@ Shader "Custom/GaussianBlur"
 {
 	Properties
 	{
-		_MainTex("Texture", 2D) = "white" {} //include a texture as a property
+		_MainTex("Texture", 2D) = "white" {}
 	}
 
 	SubShader
 	{
-		// No culling or depth
-		Cull Off ZWrite Off //ZTest Always
+		Cull Off ZWrite Off
 
 		Pass
 		{
 			CGPROGRAM
-			
-
 			#pragma vertex vertexToFragment
 			#pragma fragment giveColor
-			
 			#include "UnityCG.cginc"
 
-			float _kernel[25]; //this is our gaussian kernel
-			float _kernelSum; //whatever to divide by
-            //info from vertex on the mesh
+			float _kernel[25];
+			float _kernelSum;
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
-	
-	
-				UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
-            //info for fragment function
 			struct v2f
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
-	
-				UNITY_VERTEX_OUTPUT_STEREO //Insert
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			v2f vertexToFragment (appdata v)
 			{
-				v2f o;	
-	
-				UNITY_SETUP_INSTANCE_ID(v); //Insert
-				UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
-	
+				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_INITIALIZE_OUTPUT(v2f, o);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				return o;
 			}
 			
-			//sampler2D _MainTex;
-			UNITY_DECLARE_SCREENSPACE_TEXTURE(_MainTex); //Insert
+			UNITY_DECLARE_SCREENSPACE_TEXTURE(_MainTex);
 			float4 _MainTex_TexelSize;
-            
 
-			float4 gridOverPixel(sampler2D tex, float2 uv, float4 size) //average values surrounding pixel together and return the result
+			// FIX: remove sampler param; sample _MainTex directly
+			float4 gridOverPixel(float2 uv, float4 size)
 			{
-
 				float4 newFragColor = 0;
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -2, size.y * -2)) *_kernel[0];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -1, size.y * -2)) *_kernel[1];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  0, size.y * -2)) *_kernel[2];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  1, size.y * -2)) *_kernel[3];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  2, size.y * -2)) *_kernel[4];
 
-				// float newFragColor = 0;
-				// newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex, uv+float2(-size.x*5, size.y*5)) * _kernel[0];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -2, size.y * -2)) *_kernel[0];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -1, size.y * -2)) *_kernel[1];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 0, size.y * -2)) *_kernel[2];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 1, size.y * -2)) *_kernel[3];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 2, size.y * -2)) *_kernel[4];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -2, size.y * -1)) *_kernel[5];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -1, size.y * -1)) *_kernel[6];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 0, size.y * -1)) *_kernel[7];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 1, size.y * -1)) *_kernel[8];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 2, size.y * -1)) *_kernel[9];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -2, size.y * 0)) *_kernel[10];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -1, size.y * 0)) *_kernel[11];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 0, size.y * 0)) *_kernel[12];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 1, size.y * 0)) *_kernel[13];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 2, size.y * 0)) *_kernel[14];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -2, size.y * 1)) *_kernel[15];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -1, size.y * 1)) *_kernel[16];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 0, size.y * 1)) *_kernel[17];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 1, size.y * 1)) *_kernel[18];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 2, size.y * 1)) *_kernel[19];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -2, size.y * 2)) *_kernel[20];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -1, size.y * 2)) *_kernel[21];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 0, size.y * 2)) *_kernel[22];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 1, size.y * 2)) *_kernel[23];
-				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * 2, size.y * 2)) *_kernel[24];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -2, size.y * -1)) *_kernel[5];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -1, size.y * -1)) *_kernel[6];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  0, size.y * -1)) *_kernel[7];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  1, size.y * -1)) *_kernel[8];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  2, size.y * -1)) *_kernel[9];
+
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -2, size.y *  0)) *_kernel[10];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -1, size.y *  0)) *_kernel[11];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  0, size.y *  0)) *_kernel[12];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  1, size.y *  0)) *_kernel[13];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  2, size.y *  0)) *_kernel[14];
+
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -2, size.y *  1)) *_kernel[15];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -1, size.y *  1)) *_kernel[16];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  0, size.y *  1)) *_kernel[17];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  1, size.y *  1)) *_kernel[18];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  2, size.y *  1)) *_kernel[19];
+
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -2, size.y *  2)) *_kernel[20];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x * -1, size.y *  2)) *_kernel[21];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  0, size.y *  2)) *_kernel[22];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  1, size.y *  2)) *_kernel[23];
+				newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, uv + float2(size.x *  2, size.y *  2)) *_kernel[24];
 				//filter size 11
 				// newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -5, size.y * -5)) *_kernel[0];
 				// newFragColor += UNITY_SAMPLE_SCREENSPACE_TEXTURE(tex,uv+float2(size.x * -4, size.y * -5)) *_kernel[1];
@@ -221,13 +210,10 @@ Shader "Custom/GaussianBlur"
 				return newFragColor;
 			}
 
-
-            //returns color in float 4 variable given our v2f
 			float4 giveColor (v2f i) : SV_Target
 			{
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
-    
-				float4 col = gridOverPixel(_MainTex, i.uv, _MainTex_TexelSize);
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+				float4 col = gridOverPixel(i.uv, _MainTex_TexelSize); // call without sampler
 				return col;
 			}
 			ENDCG
