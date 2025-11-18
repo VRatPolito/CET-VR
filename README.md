@@ -218,7 +218,7 @@ The project requires the following repositories and assets:
 
 ## Known Issues
 
-1. **Missing Asset - Race Tracks and Tiny Robot Packs**: 
+1. **Missing Deprecated Asset**: 
    The "Race Tracks", "Tiny Robot Packs", and "Bézier Path Creator" asset were recently removed from the Unity Asset Store, making them unavailable for direct download. We will try reaching out to the original authors to request that these assets be made available outside of the Unity Asset Store. In the meantime, as a temporary solution, the necessary asset packages, extracted from the complete project, can be downloaded here: [Race Tracks Asset Package](https://mega.nz/file/L0ZkzCbB#XqZJdVO07iyeVDkRWLUr0Z0RdEzSbWIdssnjUcLGKeo), [Tiny Robot Packs](https://mega.nz/file/r0QDnCAL#JEWPonbiRuj-p_TaWFo6GHVD8DoRuNvXISofFk57ZbQ), [Bézier Path Creator](https://mega.nz/file/39o2HQAC#5PI7RnNP_FqnHPOfIU__bSepvZTGnrp__8IjXlNwduk). If we are unable to resolve this issue, we will replicate the elements (i.e., the race track and the tower defense robots) from scratch in the long term.
 
 2. **Viking Village Asset Update**: 
